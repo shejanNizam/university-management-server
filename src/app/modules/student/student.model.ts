@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import {
   TGuardian,
   TLocalGuardian,
@@ -171,3 +171,5 @@ const studentSchema = new Schema<TStudent>({
     default: false,
   },
 });
+
+export const Student = model("Student", studentSchema);
