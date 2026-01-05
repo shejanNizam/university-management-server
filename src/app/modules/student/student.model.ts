@@ -130,10 +130,8 @@ const studentSchema = new Schema<TStudent>({
     trim: true,
   },
   bloodGroup: {
-    enum: {
-      values: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-      message: `{VALUES} is not a valid blood group`,
-    },
+    type: String,
+    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
     required: [true, "Blood group is required"],
   },
   presentAddress: {
@@ -160,10 +158,7 @@ const studentSchema = new Schema<TStudent>({
   },
   isActive: {
     type: String,
-    enum: {
-      values: ["active", "blocked"],
-      message: `{VALUES} is not a valid status`,
-    },
+    enum: ["active", "blocked"],
     default: "active",
   },
   isDeleted: {
