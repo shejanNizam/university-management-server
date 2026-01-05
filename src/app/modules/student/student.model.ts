@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
+import { configs } from "../../config";
 import {
   TGuardian,
   TLocalGuardian,
@@ -165,6 +167,20 @@ const studentSchema = new Schema<TStudent>({
     type: Boolean,
     default: false,
   },
+});
+
+studentSchema.pre("save", async function () {
+  const user = this;
+  console.log(user);
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(configs.bcrypt_salt_rounds)
+  );
+});
+
+studentSchema.post("save", async function (savedDoc, next) {
+  savedDoc.password = "";
+  next();
 });
 
 export const Student = model("Student", studentSchema);
