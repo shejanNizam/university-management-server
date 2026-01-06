@@ -1,6 +1,4 @@
-import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
-import { configs } from "../../config";
 import {
   TGuardian,
   TLocalGuardian,
@@ -91,14 +89,12 @@ const studentSchema = new Schema<TStudent>({
     unique: true,
     trim: true,
   },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-    trim: true,
-    maxLength: [20, "Max length cannot be more than 20 characters"],
-    minLength: [6, "Min length cannot be less than 6 characters"],
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, "User id id required"],
+    unique: true,
+    ref: "User",
   },
-
   name: {
     type: studentNameSchema,
     required: [true, "Student name is required"],
@@ -167,20 +163,6 @@ const studentSchema = new Schema<TStudent>({
     type: Boolean,
     default: false,
   },
-});
-
-studentSchema.pre("save", async function () {
-  const user = this;
-  console.log(user);
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(configs.bcrypt_salt_rounds)
-  );
-});
-
-studentSchema.post("save", async function (savedDoc, next) {
-  savedDoc.password = "";
-  next();
 });
 
 export const Student = model("Student", studentSchema);
