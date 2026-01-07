@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 
 export type TStudentName = {
   firstName: string;
-  middleName?: string;
+  middleName?: string | undefined;
   lastName: string;
 };
 
