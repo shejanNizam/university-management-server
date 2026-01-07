@@ -11,9 +11,12 @@ const createStudent = async (
   try {
     const { password, student: studentData } = req.body;
 
+    // const studentValidationData = studentValidationSchema.parse(studentData);
+
     const result = await UserServices.createStudentIntoDB(
       password,
       studentData
+      // studentValidationData
     );
 
     sendResponse(res, {
