@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import { StudentRoutes } from "./app/modules/student/student.route";
 import { UserRoutes } from "./app/modules/user/user.route";
 
@@ -15,5 +16,8 @@ app.use("/api/v1/users", UserRoutes);
 app.get(`/`, (req: Request, res: Response) => {
   res.send(`Hello from University Management Server`);
 });
+
+// global error handler
+app.use(globalErrorHandler);
 
 export default app;
