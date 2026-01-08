@@ -154,6 +154,10 @@ const studentSchema = new Schema<TStudent>(
       type: String,
       required: [true, "Profile image is required"],
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
