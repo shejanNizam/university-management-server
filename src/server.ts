@@ -6,7 +6,7 @@ async function main() {
   try {
     await mongoose.connect(configs.database_url as string);
 
-    app.listen(7000, () => {
+    app.listen(configs.port, () => {
       console.log(
         `University Management Server is running on port ${configs.port}`
       );
