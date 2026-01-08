@@ -1,77 +1,54 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
 import status from "http-status";
+import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { StudentServices } from "./student.service";
 
-const getAllStudents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const result = await StudentServices.getAllStudentsFromDB();
+//  get all students
+const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
+  const result = await StudentServices.getAllStudentsFromDB();
 
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "Students are retrive successfully",
-      data: result,
-      total: result.length,
-    });
-  } catch (error) {
-    next(error);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Students are retrive successfully",
+    data: result,
+    total: result.length,
+  });
+});
+
+// get single student
+const getSingleStudent: RequestHandler = catchAsync(async (req, res, next) => {
+  const { studentId } = req.params;
+
+  if (!studentId) {
+    throw new Error("Student ID is required");
   }
-};
+  const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-const getSingleStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { studentId } = req.params;
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Student is retrived successfully",
+    data: result,
+  });
+});
 
-    if (!studentId) {
-      throw new Error("Student ID is required");
-    }
-
-    const result = await StudentServices.getSingleStudentFromDB(studentId);
-    // console.log(result);
-
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "Student is retrived successfully",
-      data: result,
-    });
-  } catch (error) {
-    next(error);
+//  delete a student
+const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
+  const { studentId } = req.params;
+  if (!studentId) {
+    throw new Error("Student ID is required");
   }
-};
+  const result = await StudentServices.deleteStudentFromDB(studentId);
 
-const deleteStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { studentId } = req.params;
-    if (!studentId) {
-      throw new Error("Student ID is required");
-    }
-
-    const result = await StudentServices.deleteStudentFromDB(studentId);
-
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: "Student is deleted successfully",
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Student is deleted successfully",
+    data: result,
+  });
+});
 
 export const StudentControllers = {
   getAllStudents,
