@@ -8,7 +8,7 @@ async function main() {
 
     app.listen(configs.port, () => {
       console.log(
-        `University Management Server is running on port ${configs.port}`
+        `University Management Server is running on port ${configs.port}`,
       );
     });
   } catch (error) {
